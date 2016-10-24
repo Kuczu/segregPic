@@ -1,3 +1,11 @@
+# TODO: output colors
+# TODO: summary info
+# TODO: save summary info
+# TODO: args commands
+# TODO: warning before start
+# TODO: add about
+# TODO: ??
+
 import os
 import shutil
 from PIL import Image
