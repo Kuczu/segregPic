@@ -1,3 +1,7 @@
+from colorama import init
+from colorama import Fore, Back, Style
+init()
+
 __AUTHOR__ = "Kuczu https://github.com/Kuczu"
 __VERSION__ = "0.1 BETA"
 __LICENSE__ = "MIT"
@@ -13,9 +17,21 @@ PATH_SEPARATOR = ""
 PATH = ""
 MAIN_PATH = ""
 
+# 0 - log
+# 1 - success - unchangeable!
+# 2 - warning
+# 3 - error - unchangeable!
+PRINT_PERMITS = [True, True, True, True]
+PRINT_OPTIONS = [Style.RESET_ALL, Fore.GREEN, Fore.YELLOW, Fore.RED]
+LOG_TO_FILE_PERMITS = [True, True, True, True]
+
+HANDLER_FILE_WITH_LOGS = ''
+HANDLER_FILE_WITH_SUMMARY = ''
+
 
 def set_default_start_values(path):
-    global WIDTH, HEIGHT, PATH, MAIN_PATH, PATH_SEPARATOR, GOOD_FOLDER_NAME, BAD_FOLDER_NAME, UNRECOGNIZED_FOLDER_NAME
+    global WIDTH, HEIGHT, PATH, MAIN_PATH, PATH_SEPARATOR, GOOD_FOLDER_NAME, BAD_FOLDER_NAME, UNRECOGNIZED_FOLDER_NAME, \
+        PRINT_PERMITS, LOG_TO_FILE_PERMITS
     WIDTH = 1920
     HEIGHT = 1080
 
@@ -27,6 +43,9 @@ def set_default_start_values(path):
     PATH = path
 
     PATH_SEPARATOR = "\\"
+
+    PRINT_PERMITS = [True, True, True, True]
+    LOG_TO_FILE_PERMITS = [True, True, True, True]
 
 
 def set_width(width):
@@ -57,3 +76,29 @@ def set_bad_folder_name(name):
 def set_unrecognized_folder_name(name):
     global UNRECOGNIZED_FOLDER_NAME
     UNRECOGNIZED_FOLDER_NAME = name
+
+
+def set_print_option_for_log(value):
+    global PRINT_PERMITS
+    PRINT_PERMITS[0] = value
+
+
+def set_print_option_for_warning(value):
+    global PRINT_PERMITS
+    PRINT_PERMITS[2] = value
+
+
+def set_log_into_file_permits(value):
+    global LOG_TO_FILE_PERMITS
+    for i in range(len(LOG_TO_FILE_PERMITS)):
+        LOG_TO_FILE_PERMITS[i] = value
+
+
+def open_file_with_logs():
+    print('log')
+    # TODO
+
+
+def open_file_with_summary():
+    print('summary')
+    # TODO

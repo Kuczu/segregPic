@@ -17,7 +17,10 @@ def display_config():
     print("  Picture height: " + str(config.HEIGHT))
     print("  Folder for matching pics: " + config.PATH_SEPARATOR + config.GOOD_FOLDER_NAME)
     print("             not matching pics: " + config.PATH_SEPARATOR + config.BAD_FOLDER_NAME)
-    print("             unrecognized files: " + config.PATH_SEPARATOR + config.UNRECOGNIZED_FOLDER_NAME + "\n")
+    print("             unrecognized files: " + config.PATH_SEPARATOR + config.UNRECOGNIZED_FOLDER_NAME)
+    print("  Print logs: " + str(config.PRINT_PERMITS[0]))
+    print("  Print warnings: " + str(config.PRINT_PERMITS[2]))
+    print("  Save all logs into file: " + str(config.LOG_TO_FILE_PERMITS[0]) + "\n")
 
 
 def display_helpers():
@@ -35,6 +38,9 @@ def display_help():
     print("To change folders names use: '-g FOLDER_NAME' to change name for matching pics folder")
     print("                             '-b FOLDER_NAME' to change name for not matching pics folder")
     print("                             '-u FOLDER_NAME' to change name for unrecognized files folder")
+    print("To change if print logs: '-log t' for set true, '-log t' for set false")
+    print("To change if print warnings: '-warn t' for set true, '-warn t' for set false")
+    print("To change if save all logs into file: '-sv t' for set true, '-sv t' for set false")
     display_helpers()
 
 

@@ -54,6 +54,39 @@ def parse_command(console_command):
                 config.set_unrecognized_folder_name(commands[i + 1])
                 is_changed = True
                 i += 2
+            elif commands[i] == '-log':
+                if commands[i + 1] == 't':
+                    config.set_print_option_for_log(True)
+                    is_changed = True
+                elif commands[i + 1] == 'f':
+                    config.set_print_option_for_log(False)
+                    is_changed = True
+                else:
+                    return_error_array.append(
+                        "For " + commands[i] + " must be 't' or 'f'")
+                i += 2
+            elif commands[i] == '-warn':
+                if commands[i + 1] == 't':
+                    config.set_print_option_for_warning(True)
+                    is_changed = True
+                elif commands[i + 1] == 'f':
+                    config.set_print_option_for_warning(False)
+                    is_changed = True
+                else:
+                    return_error_array.append(
+                        "For " + commands[i] + " must be 't' or 'f'")
+                i += 2
+            elif commands[i] == '-sv':
+                if commands[i + 1] == 't':
+                    config.set_print_option_for_warning(True)
+                    is_changed = True
+                elif commands[i + 1] == 'f':
+                    config.set_print_option_for_warning(False)
+                    is_changed = True
+                else:
+                    return_error_array.append(
+                        "For " + commands[i] + " must be 't' or 'f'")
+                i += 2
             else:
                 return_error_array.append("Unrecognized command: " + commands[i])
                 i += 1
