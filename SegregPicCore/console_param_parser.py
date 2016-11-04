@@ -3,8 +3,8 @@ import os
 import re
 
 
-def parse_command(console_command):
-    commands = console_command.split(" ")
+def parse_command(commands):
+    # commands = console_command.split(" ")
 
     is_changed = False
     return_error_array = []

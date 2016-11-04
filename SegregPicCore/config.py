@@ -1,3 +1,5 @@
+import sys
+
 from colorama import init
 from colorama import Fore, Back, Style
 init()
@@ -27,6 +29,8 @@ LOG_TO_FILE_PERMITS = [True, True, True, True]
 
 HANDLER_FILE_WITH_LOGS = ''
 HANDLER_FILE_WITH_SUMMARY = ''
+
+START_COMMANDS = sys.argv[1:]
 
 
 def set_default_start_values(path):

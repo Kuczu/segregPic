@@ -56,20 +56,25 @@ def get_prompt():
     elif command == 'config':
         return 3
     else:
-        error_list = parser.parse_command(command)[0]
-        is_changed = parser.parse_command(command)[1]
+        return parse_commands(command.split(" "))
 
-        if not error_list:
-            return 4
+
+def parse_commands(command_list):
+    x = parser.parse_command(command_list)
+    error_list = x[0]
+    is_changed = x[1]
+
+    if not error_list:
+        return 4
+    else:
+        print("Not every command or argument was correct: ")
+
+        for error in error_list:
+            print(error)
+
+        print()
+
+        if is_changed:
+            return -1
         else:
-            print("Not every command was correct: ")
-
-            for error in error_list:
-                print(error)
-
-            print()
-
-            if is_changed:
-                return -1
-            else:
-                return -2
+            return -2

@@ -1,7 +1,6 @@
 # TODO: output colors
 # TODO: summary info
 # TODO: save summary info
-# TODO: args commands
 # TODO: warning before start
 # TODO: add about
 # TODO: add same file name problem
@@ -38,6 +37,9 @@ def start():
 
 def main():
     config.set_default_start_values(os.getcwd() + "\\test")
+
+    menu.parse_commands(config.START_COMMANDS)
+
     menu.display_menu()
 
     while 1 == 1:
