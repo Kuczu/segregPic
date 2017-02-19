@@ -4,8 +4,6 @@ import re
 
 
 def parse_command(commands):
-    # commands = console_command.split(" ")
-
     is_changed = False
     return_error_array = []
 
@@ -99,3 +97,17 @@ def parse_command(commands):
                 break
 
     return [return_error_array, is_changed]
+
+
+def not_empty_folder_error():
+    print("What do you want to do:")
+    print("Type 1 to ERASE whole folder")
+    print("Type 2 to interrupt program")
+
+    while():
+        inp = input("> ")
+
+        if inp == 1:
+            return 1
+        elif inp == 2:
+            return 2

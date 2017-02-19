@@ -42,7 +42,7 @@ def main():
 
     menu.display_menu()
 
-    while 1 == 1:
+    while not config.IS_INTERRUPTED:
         command = menu.get_prompt()
 
         if command == 0:

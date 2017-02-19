@@ -8,6 +8,8 @@ __AUTHOR__ = "Kuczu https://github.com/Kuczu"
 __VERSION__ = "0.1 BETA"
 __LICENSE__ = "MIT"
 
+IS_INTERRUPTED = False
+
 WIDTH = ""
 HEIGHT = ""
 
@@ -23,6 +25,11 @@ MAIN_PATH = ""
 # 1 - success - unchangeable!
 # 2 - warning
 # 3 - error - unchangeable!
+LOG_print_level = 0
+SUCCESS_print_level = 1
+WARNING_print_level = 2
+ERROR_print_level = 3
+
 PRINT_PERMITS = [True, True, True, True]
 PRINT_OPTIONS = [Style.RESET_ALL, Fore.GREEN, Fore.YELLOW, Fore.RED]
 LOG_TO_FILE_PERMITS = [True, True, True, True]
@@ -106,3 +113,7 @@ def open_file_with_logs():
 def open_file_with_summary():
     print('summary')
     # TODO
+
+
+class FolderIsNotEmpty(Exception):
+    pass

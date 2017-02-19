@@ -45,18 +45,18 @@ def display_help():
 
 
 def get_prompt():
-    command = input("> ")
+    command = input("> ").split(" ")
 
-    if command == 'q':
+    if command[0] == 'q':
         return 0
-    elif command == 'start':
+    elif command[0] == 'start':
         return 1
-    elif command == 'help':
+    elif command[0] == 'help':
         return 2
-    elif command == 'config':
+    elif command[0] == 'config':
         return 3
     else:
-        return parse_commands(command.split(" "))
+        return parse_commands(command)
 
 
 def parse_commands(command_list):
