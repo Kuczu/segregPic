@@ -20,7 +20,7 @@ def display_config():
     print("             unrecognized files: " + config.PATH_SEPARATOR + config.UNRECOGNIZED_FOLDER_NAME)
     print("  Print logs: " + str(config.PRINT_PERMITS[0]))
     print("  Print warnings: " + str(config.PRINT_PERMITS[2]))
-    print("  Save all logs into file: " + str(config.LOG_TO_FILE_PERMITS[0]) + "\n")
+    print("  Save all logs into file: " + str(config.WRITE_TO_FILE_PERMITS[0]) + "\n")
 
 
 def display_helpers():

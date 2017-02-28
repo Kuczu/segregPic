@@ -3,9 +3,6 @@
 # TODO: save summary info
 # TODO: warning before start
 # TODO: add about
-# TODO: add same file name problem
-# TODO: add clear good/bad/unrecognized folders if are // only files without sub folders // if file name exists, try unique one if exists too move to folder 1,  2 etc
-# TODO: ??
 
 import os
 

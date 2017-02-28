@@ -1,11 +1,13 @@
 import sys
 
+from SegregPicCore import output_methods
+
 from colorama import init
 from colorama import Fore, Back, Style
 init()
 
 __AUTHOR__ = "Kuczu https://github.com/Kuczu"
-__VERSION__ = "0.1 BETA"
+__VERSION__ = "0.2 BETA"
 __LICENSE__ = "MIT"
 
 IS_INTERRUPTED = False
@@ -21,10 +23,6 @@ PATH_SEPARATOR = ""
 PATH = ""
 MAIN_PATH = ""
 
-# 0 - log
-# 1 - success - unchangeable!
-# 2 - warning
-# 3 - error - unchangeable!
 LOG_print_level = 0
 SUCCESS_print_level = 1
 WARNING_print_level = 2
@@ -32,17 +30,19 @@ ERROR_print_level = 3
 
 PRINT_PERMITS = [True, True, True, True]
 PRINT_OPTIONS = [Style.RESET_ALL, Fore.GREEN, Fore.YELLOW, Fore.RED]
-LOG_TO_FILE_PERMITS = [True, True, True, True]
+WRITE_TO_FILE_PERMITS = [True, True, True, True]
 
 HANDLER_FILE_WITH_LOGS = ''
 HANDLER_FILE_WITH_SUMMARY = ''
 
 START_COMMANDS = sys.argv[1:]
 
+#TODO
+LOGGER = None
 
 def set_default_start_values(path):
     global WIDTH, HEIGHT, PATH, MAIN_PATH, PATH_SEPARATOR, GOOD_FOLDER_NAME, BAD_FOLDER_NAME, UNRECOGNIZED_FOLDER_NAME, \
-        PRINT_PERMITS, LOG_TO_FILE_PERMITS
+        PRINT_PERMITS, WRITE_TO_FILE_PERMITS, LOGGER
     WIDTH = 1920
     HEIGHT = 1080
 
@@ -56,7 +56,10 @@ def set_default_start_values(path):
     PATH_SEPARATOR = "\\"
 
     PRINT_PERMITS = [True, True, True, True]
-    LOG_TO_FILE_PERMITS = [True, True, True, True]
+    WRITE_TO_FILE_PERMITS = [True, True, True, True]
+
+    #TODO
+    #LOGGER = output_methods.Logger()
 
 
 def set_width(width):
@@ -100,9 +103,9 @@ def set_print_option_for_warning(value):
 
 
 def set_log_into_file_permits(value):
-    global LOG_TO_FILE_PERMITS
-    for i in range(len(LOG_TO_FILE_PERMITS)):
-        LOG_TO_FILE_PERMITS[i] = value
+    global WRITE_TO_FILE_PERMITS
+    for i in range(len(WRITE_TO_FILE_PERMITS)):
+        WRITE_TO_FILE_PERMITS[i] = value
 
 
 def open_file_with_logs():
@@ -113,7 +116,3 @@ def open_file_with_logs():
 def open_file_with_summary():
     print('summary')
     # TODO
-
-
-class FolderIsNotEmpty(Exception):
-    pass
