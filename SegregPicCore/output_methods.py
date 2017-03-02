@@ -1,45 +1,5 @@
 from SegregPicCore import config
 
-# TODO implement logger
-
-# ##########################################
-
-# INFO_print_level = 0
-# SUCCESS_print_level = 1
-# WARNING_print_level = 2
-# ERROR_print_level = 3
-PRINT_PROLOG = [
-    "",
-    "   SUCCESS!:",
-    "   WARNING:",
-    "   ERROR:"
-]
-
-
-def print_output(text, level, print_prologue=True):
-
-    if config.PRINT_PERMITS[level]:
-        if print_prologue:
-            print(config.PRINT_OPTIONS[level] + PRINT_PROLOG[level])
-
-        try:
-            print(config.PRINT_OPTIONS[level] + text)
-        except (TypeError, UnicodeEncodeError):
-            config.PRINT_OPTIONS[0]  # reset
-            textp = text.encode("UTF-8")
-            print(textp)
-
-        config.PRINT_OPTIONS[0]  # reset
-
-    log_to_file(text, level, print_prologue)
-
-
-def log_to_file(text, level, print_prologue):
-    if config.WRITE_TO_FILE_PERMITS[level]:
-
-        print('LOGGED TO FILE')
-
-# ##########################################
 
 # SINGLETON
 class LoggerMetaclass(type):
@@ -57,10 +17,9 @@ class Logger(metaclass=LoggerMetaclass):
         self.log_file_full_path = log_file_full_path
         self.log_file_name = log_file_name
 
-        # self.file_handler = self.create_log_file(log_file_full_path, log_file_name)
-        self.file_handler = None
-
         self.is_file_already_created = False
+
+        self.file_handler = self.create_log_file()
 
         self.PRINT_PROLOG = [
                                 "",
@@ -119,10 +78,15 @@ class Logger(metaclass=LoggerMetaclass):
         if print_prologue:
             self.file_handler.write(self.PRINT_PROLOG[level] + '\n')
 
-        self.file_handler.write(message + '\n')
+        try:
+            self.file_handler.write(message + '\n')
+        except (TypeError, UnicodeEncodeError):
+            textp = message.encode("UTF-8")
+            self.file_handler.write(str(textp) + '\n')
 
     def close_file(self):
-        self.file_handler.close()
+        if self.file_handler is not None:
+            self.file_handler.close()
 
 
 class FileIsAlreadyCreatedError(Exception):

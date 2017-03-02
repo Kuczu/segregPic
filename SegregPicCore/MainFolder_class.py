@@ -3,7 +3,6 @@ from PIL import Image
 
 from SegregPicCore import SpecificFolder_class as SpecificFolder
 from SegregPicCore import config
-from SegregPicCore import output_methods as output
 
 
 class MainFolder:
@@ -27,7 +26,7 @@ class MainFolder:
         while self.__list_of_folders:
             current_folder = self.__list_of_folders.pop()
 
-            output.print_output(" PROCESSING: " + current_folder, config.INFO_print_level, False)  # log
+            config.LOGGER.info_output(" PROCESSING: " + current_folder, False)
 
             self.get_folders_and_files_list(current_folder)
 
@@ -63,19 +62,9 @@ class MainFolder:
             except (IOError, OSError) as x:
                 fp.close()
 
-                # output.print_output("     WARNING:", config.WARNING_print_level)  # warning
-                output.print_output(str(x), config.WARNING_print_level)
+                config.LOGGER.warning_output(str(x))
 
                 self.__unrecognized_folder.move_file(file)
                 pass
 
         self.__list_of_files.clear()
-
-    # def get_filename_list_from_given_destination(self, destination):
-    #     files_list = []
-    #
-    #     for entry in os.scandir(destination):
-    #         if not entry.is_file():
-    #             files_list.append(entry)
-    #
-    #     return files_list

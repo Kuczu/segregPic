@@ -28,7 +28,7 @@ def parse_command(commands):
                 i += 2
             elif commands[i] == '-p':
                 if os.path.exists(config.MAIN_PATH + config.PATH_SEPARATOR + commands[i + 1]):
-                    config.set_path(commands[i + 1])
+                    config.set_path(config.MAIN_PATH + config.PATH_SEPARATOR + commands[i + 1])
                     is_changed = True
                 else:
                     return_error_list.append("For " + commands[i] + " wrong path: " + commands[i + 1] + " does not exist")
@@ -144,7 +144,7 @@ def parse_command(commands):
 
 
 def get_prompt():
-    command = input("> ").split('')
+    command = input("> ").split(' ')
 
     if command[0] == 'q':
         return 0

@@ -22,7 +22,7 @@ GOOD_FOLDER_NAME = ""
 BAD_FOLDER_NAME = ""
 UNRECOGNIZED_FOLDER_NAME = ""
 
-LOG_FILENAME = ""  # TODO
+LOG_FILENAME = ""
 
 PATH_SEPARATOR = ""
 PATH = ""
@@ -69,7 +69,7 @@ def set_default_start_values(path):
 
 def create_logger_instance():
     global LOGGER
-    LOGGER = output_methods.Logger(PATH)
+    LOGGER = output_methods.Logger(PATH, LOG_FILENAME)
 
 
 def set_width(width):
@@ -149,19 +149,20 @@ def set_save_statistic_file_permit(value):
 
 
 def _generate_unique_log_filename():
-    date = datetime.datetime.now().strftime("%Y-%m-%d_%H:%M")
+    date = datetime.datetime.now().strftime("%Y-%m-%d_%H%M")
     filename = "SegregPicSummary_" + date
     unique_part = ""
+    extension = ".txt"
 
     full_destination = PATH + PATH_SEPARATOR + filename
 
-    unique_destination_path = full_destination
+    unique_destination_path = full_destination + extension
 
     while os.path.exists(unique_destination_path):
         unique_part = "__" + str(uuid.uuid4().hex)
-        unique_destination_path = full_destination + unique_part
+        unique_destination_path = full_destination + unique_part + extension
 
-    return filename + unique_part
+    return filename + unique_part + extension
 
 
 def set_log_filename():

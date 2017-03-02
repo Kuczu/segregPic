@@ -23,7 +23,7 @@ class SpecificFolder:
         try:
             os.makedirs(self.__folder_full_path)
         except OSError:
-            output.print_output("Folder: " + self.__folder_name + " already exists!", config.WARNING_print_level)
+            config.LOGGER.warning_output("Folder: " + self.__folder_name + " already exists!")
 
     def move_file(self, image_path, image_destination = ''):
         try:
@@ -31,26 +31,24 @@ class SpecificFolder:
             shutil.move(image_path, image_destin)
             self.update_folder_status(image_destin)
 
-            output.print_output("     moved " + image_path + " to " + image_destin, config.INFO_print_level, False)  # log
+            config.LOGGER.info_output("     moved " + image_path + " to " + image_destin, False)
+
         except PermissionError as x:
-            # output.print_output("     WARNING:", config.WARNING_print_level)  # warning
             output.print_output(str(x), config.WARNING_print_level)
         except shutil.Error as x:
             string_exception = str(x)
 
             if string_exception[0] == 'D':  # stands for: Destination path ... already exists
-                # output.print_output("     WARNING:", config.WARNING_print_level)  # warning
-                output.print_output(string_exception, config.WARNING_print_level)
+                config.LOGGER.warning_output(string_exception)
 
                 image_name = image_path.split(config.PATH_SEPARATOR)[-1]
                 image_dest = self.get_path_to_unique_where_to_copy(image_name)
                 self.move_file(image_path, image_dest)
             else:
-                # output.print_output("     ERROR:", config.ERROR_print_level)  # error
-                output.print_output(string_exception, config.ERROR_print_level)
+                config.LOGGER.error_output(string_exception)
 
     def update_folder_status(self, image_full_path):
-        # TODO OSError exception
+        # can raise OSError exception
         self.__folder_size_bytes += os.path.getsize(image_full_path)
         self.__folder_amount += 1
 
@@ -100,7 +98,7 @@ class SpecificFolder:
             unique_destination_path = self.__folder_full_path + config.PATH_SEPARATOR + unique_part
 
         os.makedirs(unique_destination_path)
-        output.print_output('   Created unique folder: ' + unique_destination_path, config.INFO_print_level)
+        config.LOGGER.info_output('   Created unique folder: ' + unique_destination_path)
 
         self.__unique_subfolder_name = unique_part
 
@@ -109,4 +107,4 @@ class SpecificFolder:
 
         os.makedirs(full_path)
         self.__unique_subfolder_counter += 1
-        output.print_output('   Created subfolder - folder: ' + full_path, config.INFO_print_level)
+        config.LOGGER.info_output('   Created subfolder - folder: ' + full_path)

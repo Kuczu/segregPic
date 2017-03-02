@@ -25,7 +25,8 @@ def run_segreg():
     list_of_folder_objects = []
 
     for item in folder_list:
-        print("Start processing: " + item)  # TODO make log
+        # print("Start processing: " + item)
+        config.LOGGER.info_output("Start processing: " + item, False)
         list_of_folder_objects.append(MainFolder_class.MainFolder(config.PATH, item))
         list_of_folder_objects[-1].cleanify()
 
@@ -77,6 +78,7 @@ def main():
 
         break
 
+    config.LOGGER.close_file()
 
 if __name__ == "__main__":
     main()
