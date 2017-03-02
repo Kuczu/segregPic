@@ -4,7 +4,7 @@ from SegregPicCore import config
 
 # ##########################################
 
-# LOG_print_level = 0
+# INFO_print_level = 0
 # SUCCESS_print_level = 1
 # WARNING_print_level = 2
 # ERROR_print_level = 3
@@ -79,8 +79,8 @@ class Logger(metaclass=LoggerMetaclass):
 
         return file
 
-    def log_output(self, message, print_prologue=True):
-        level = config.LOG_print_level
+    def info_output(self, message, print_prologue=True):
+        level = config.INFO_print_level
         self.output_method(message, level, print_prologue)
 
     def success_output(self, message, print_prologue=True):
@@ -120,6 +120,9 @@ class Logger(metaclass=LoggerMetaclass):
             self.file_handler.write(self.PRINT_PROLOG[level] + '\n')
 
         self.file_handler.write(message + '\n')
+
+    def close_file(self):
+        self.file_handler.close()
 
 
 class FileIsAlreadyCreatedError(Exception):

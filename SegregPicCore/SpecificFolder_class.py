@@ -31,7 +31,7 @@ class SpecificFolder:
             shutil.move(image_path, image_destin)
             self.update_folder_status(image_destin)
 
-            output.print_output("     moved " + image_path + " to " + image_destin, config.LOG_print_level, False)  # log
+            output.print_output("     moved " + image_path + " to " + image_destin, config.INFO_print_level, False)  # log
         except PermissionError as x:
             # output.print_output("     WARNING:", config.WARNING_print_level)  # warning
             output.print_output(str(x), config.WARNING_print_level)
@@ -100,7 +100,7 @@ class SpecificFolder:
             unique_destination_path = self.__folder_full_path + config.PATH_SEPARATOR + unique_part
 
         os.makedirs(unique_destination_path)
-        output.print_output('   Created unique folder: ' + unique_destination_path, config.LOG_print_level)
+        output.print_output('   Created unique folder: ' + unique_destination_path, config.INFO_print_level)
 
         self.__unique_subfolder_name = unique_part
 
@@ -109,4 +109,4 @@ class SpecificFolder:
 
         os.makedirs(full_path)
         self.__unique_subfolder_counter += 1
-        output.print_output('   Created subfolder - folder: ' + full_path, config.LOG_print_level)
+        output.print_output('   Created subfolder - folder: ' + full_path, config.INFO_print_level)

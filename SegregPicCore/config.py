@@ -1,10 +1,13 @@
+import os
 import sys
+import uuid
+import datetime
 
 from SegregPicCore import output_methods
 
 from colorama import init
 from colorama import Fore, Back, Style
-init()
+init()  # colorama init
 
 __AUTHOR__ = "Kuczu https://github.com/Kuczu"
 __VERSION__ = "0.2 BETA"
@@ -19,30 +22,33 @@ GOOD_FOLDER_NAME = ""
 BAD_FOLDER_NAME = ""
 UNRECOGNIZED_FOLDER_NAME = ""
 
+LOG_FILENAME = ""  # TODO
+
 PATH_SEPARATOR = ""
 PATH = ""
 MAIN_PATH = ""
 
-LOG_print_level = 0
+INFO_print_level = 0
 SUCCESS_print_level = 1
 WARNING_print_level = 2
 ERROR_print_level = 3
 
 PRINT_PERMITS = [True, True, True, True]
 PRINT_OPTIONS = [Style.RESET_ALL, Fore.GREEN, Fore.YELLOW, Fore.RED]
+
+WRITE_TO_FILE_ENABLE = True
 WRITE_TO_FILE_PERMITS = [True, True, True, True]
 
-HANDLER_FILE_WITH_LOGS = ''
-HANDLER_FILE_WITH_SUMMARY = ''
+WRITE_SUMMARY_TO_FILE = True
 
 START_COMMANDS = sys.argv[1:]
 
-#TODO
 LOGGER = None
+
 
 def set_default_start_values(path):
     global WIDTH, HEIGHT, PATH, MAIN_PATH, PATH_SEPARATOR, GOOD_FOLDER_NAME, BAD_FOLDER_NAME, UNRECOGNIZED_FOLDER_NAME, \
-        PRINT_PERMITS, WRITE_TO_FILE_PERMITS, LOGGER
+        WRITE_TO_FILE_ENABLE, PRINT_PERMITS, WRITE_TO_FILE_PERMITS, LOGGER
     WIDTH = 1920
     HEIGHT = 1080
 
@@ -56,10 +62,14 @@ def set_default_start_values(path):
     PATH_SEPARATOR = "\\"
 
     PRINT_PERMITS = [True, True, True, True]
+
+    WRITE_TO_FILE_ENABLE = True
     WRITE_TO_FILE_PERMITS = [True, True, True, True]
 
-    #TODO
-    #LOGGER = output_methods.Logger()
+
+def create_logger_instance():
+    global LOGGER
+    LOGGER = output_methods.Logger(PATH)
 
 
 def set_width(width):
@@ -75,6 +85,8 @@ def set_height(height):
 def set_path(path):
     global PATH
     PATH = path
+
+    set_log_filename()
 
 
 def set_good_folder_name(name):
@@ -92,7 +104,7 @@ def set_unrecognized_folder_name(name):
     UNRECOGNIZED_FOLDER_NAME = name
 
 
-def set_print_option_for_log(value):
+def set_print_option_for_info(value):
     global PRINT_PERMITS
     PRINT_PERMITS[0] = value
 
@@ -102,17 +114,56 @@ def set_print_option_for_warning(value):
     PRINT_PERMITS[2] = value
 
 
-def set_log_into_file_permits(value):
+def set_info_save_to_file_permit(value):
     global WRITE_TO_FILE_PERMITS
-    for i in range(len(WRITE_TO_FILE_PERMITS)):
-        WRITE_TO_FILE_PERMITS[i] = value
+    WRITE_TO_FILE_PERMITS[0] = value
+    _check_save_to_file_enable()
 
 
-def open_file_with_logs():
-    print('log')
-    # TODO
+def set_succ_save_to_file_permit(value):
+    global WRITE_TO_FILE_PERMITS
+    WRITE_TO_FILE_PERMITS[1] = value
+    _check_save_to_file_enable()
 
 
-def open_file_with_summary():
-    print('summary')
-    # TODO
+def set_warning_save_to_file_permit(value):
+    global WRITE_TO_FILE_PERMITS
+    WRITE_TO_FILE_PERMITS[2] = value
+    _check_save_to_file_enable()
+
+
+def set_error_save_to_file_permit(value):
+    global WRITE_TO_FILE_PERMITS
+    WRITE_TO_FILE_PERMITS[3] = value
+    _check_save_to_file_enable()
+
+
+def _check_save_to_file_enable():
+    global WRITE_TO_FILE_ENABLE
+    WRITE_TO_FILE_ENABLE = True in WRITE_TO_FILE_PERMITS
+
+
+def set_save_statistic_file_permit(value):
+    global WRITE_SUMMARY_TO_FILE
+    WRITE_SUMMARY_TO_FILE = value
+
+
+def _generate_unique_log_filename():
+    date = datetime.datetime.now().strftime("%Y-%m-%d_%H:%M")
+    filename = "SegregPicSummary_" + date
+    unique_part = ""
+
+    full_destination = PATH + PATH_SEPARATOR + filename
+
+    unique_destination_path = full_destination
+
+    while os.path.exists(unique_destination_path):
+        unique_part = "__" + str(uuid.uuid4().hex)
+        unique_destination_path = full_destination + unique_part
+
+    return filename + unique_part
+
+
+def set_log_filename():
+    global LOG_FILENAME
+    LOG_FILENAME = _generate_unique_log_filename()

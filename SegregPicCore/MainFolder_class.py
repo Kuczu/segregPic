@@ -27,7 +27,7 @@ class MainFolder:
         while self.__list_of_folders:
             current_folder = self.__list_of_folders.pop()
 
-            output.print_output(" PROCESSING: " + current_folder, config.LOG_print_level, False)  # log
+            output.print_output(" PROCESSING: " + current_folder, config.INFO_print_level, False)  # log
 
             self.get_folders_and_files_list(current_folder)
 

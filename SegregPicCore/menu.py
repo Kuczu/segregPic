@@ -1,11 +1,13 @@
 from SegregPicCore import config
-from SegregPicCore import console_param_parser as parser
 
 
-def display_menu():
+def display_basic_info():
     print("Author: " + config.__AUTHOR__)
     print("Version: " + config.__VERSION__)
     print("License: " + config.__LICENSE__ + '\n')
+
+
+def display_menu():
     display_config()
     display_helpers()
 
@@ -16,11 +18,33 @@ def display_config():
     print("  Picture width: " + str(config.WIDTH))
     print("  Picture height: " + str(config.HEIGHT))
     print("  Folder for matching pics: " + config.PATH_SEPARATOR + config.GOOD_FOLDER_NAME)
-    print("             not matching pics: " + config.PATH_SEPARATOR + config.BAD_FOLDER_NAME)
-    print("             unrecognized files: " + config.PATH_SEPARATOR + config.UNRECOGNIZED_FOLDER_NAME)
-    print("  Print logs: " + str(config.PRINT_PERMITS[0]))
-    print("  Print warnings: " + str(config.PRINT_PERMITS[2]))
-    print("  Save all logs into file: " + str(config.WRITE_TO_FILE_PERMITS[0]) + "\n")
+    print("         not matching pics: " + config.PATH_SEPARATOR + config.BAD_FOLDER_NAME)
+    print("        unrecognized files: " + config.PATH_SEPARATOR + config.UNRECOGNIZED_FOLDER_NAME + "\n")
+    print("  Print info: " + str(config.PRINT_PERMITS[config.INFO_print_level]))
+    print("    warnings: " + str(config.PRINT_PERMITS[config.WARNING_print_level]))
+    display_file_section()
+    display_summary_file_section()
+
+
+def display_file_section():
+    print()
+
+    print("  Save logs into file: ")
+    print("                 info: " + str(config.WRITE_TO_FILE_PERMITS[config.INFO_print_level]))
+    print("              success: " + str(config.WRITE_TO_FILE_PERMITS[config.SUCCESS_print_level]))
+    print("             warnings: " + str(config.WRITE_TO_FILE_PERMITS[config.WARNING_print_level]))
+    print("               errors: " + str(config.WRITE_TO_FILE_PERMITS[config.ERROR_print_level]))
+
+    if config.WRITE_TO_FILE_ENABLE:
+        print("  log filename: " + config.LOG_FILENAME)
+    else:
+        print("  log filename: you have disabled logging to file")
+
+
+def display_summary_file_section():
+    print()
+    print("  Save statistics file in each cleaned folder: " + str(config.WRITE_SUMMARY_TO_FILE))
+    print()
 
 
 def display_helpers():
@@ -38,43 +62,11 @@ def display_help():
     print("To change folders names use: '-g FOLDER_NAME' to change name for matching pics folder")
     print("                             '-b FOLDER_NAME' to change name for not matching pics folder")
     print("                             '-u FOLDER_NAME' to change name for unrecognized files folder")
-    print("To change if print logs: '-log t' for set true, '-log t' for set false")
-    print("To change if print warnings: '-warn t' for set true, '-warn t' for set false")
-    print("To change if save all logs into file: '-sv t' for set true, '-sv t' for set false")
+    print("To change print info: '-info t' for set true, '-info f' for set false")
+    print("To change print warnings: '-warn t' for set true, '-warn f' for set false")
+    print("To change save all info into log file: '-infof t' for set true, '-infof f' for set false")
+    print("To change save all success into log file: '-succf t' for set true, '-succf f' for set false")
+    print("To change save all warnings into log file: '-warnf t' for set true, '-warnf f' for set false")
+    print("To change save all errors into log file: '-errf t' for set true, '-errf f' for set false")
+    print("To change if save statistics file in each cleaned folder: '-statf t' for set true, '-statf f' for set false")
     display_helpers()
-
-
-def get_prompt():
-    command = input("> ").split(" ")
-
-    if command[0] == 'q':
-        return 0
-    elif command[0] == 'start':
-        return 1
-    elif command[0] == 'help':
-        return 2
-    elif command[0] == 'config':
-        return 3
-    else:
-        return parse_commands(command)
-
-
-def parse_commands(command_list):
-    x = parser.parse_command(command_list)
-    error_list = x[0]
-    is_changed = x[1]
-
-    if not error_list:
-        return 4
-    else:
-        print("Not every command or argument was correct: ")
-
-        for error in error_list:
-            print(error)
-
-        print()
-
-        if is_changed:
-            return -1
-        else:
-            return -2

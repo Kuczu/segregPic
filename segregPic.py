@@ -1,6 +1,3 @@
-# TODO: output colors
-# TODO: summary info
-# TODO: save summary info
 # TODO: warning before start
 # TODO: add about
 
@@ -9,6 +6,7 @@ import os
 from SegregPicCore import config
 from SegregPicCore import menu
 from SegregPicCore import MainFolder_class
+from SegregPicCore import console_param_parser as parser
 
 
 def get_folders_list(path):
@@ -21,27 +19,40 @@ def get_folders_list(path):
     return folder_list
 
 
-def start():
+def run_segreg():
     folder_list = get_folders_list(config.PATH)
 
     list_of_folder_objects = []
 
     for item in folder_list:
-        print("Start processing: " + item)
+        print("Start processing: " + item)  # TODO make log
         list_of_folder_objects.append(MainFolder_class.MainFolder(config.PATH, item))
         list_of_folder_objects[-1].cleanify()
 
 
-def main():
-    config.set_default_start_values(os.getcwd() + "\\test")
+def start():
+    config.create_logger_instance()
+    run_segreg()
 
-    menu.parse_commands(config.START_COMMANDS)
+
+def prepare():
+    config.set_default_start_values(os.getcwd() + "\\test")
+    config.set_log_filename()
+
+    menu.display_basic_info()
+
+    parser.parse_commands(config.START_COMMANDS)
 
     menu.display_menu()
 
-    while not config.IS_INTERRUPTED:
-        command = menu.get_prompt()
 
+def main():
+    prepare()
+
+    while not config.IS_INTERRUPTED:
+        command = parser.get_prompt()
+
+        # add return variable as return code
         if command == 0:
             break
         elif command == 1:
@@ -53,11 +64,11 @@ def main():
             menu.display_config()
             continue
         elif command == 4:
-            print("configuration change was successful!")
+            print("Configuration change was successful!")
             menu.display_config()
             continue
         elif command == -1:
-            print("configuration PARTLY change was successful!")
+            print("Configuration PARTLY change was successful!")
             menu.display_config()
             continue
         elif command == -2:
