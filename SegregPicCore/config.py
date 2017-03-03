@@ -10,10 +10,8 @@ from colorama import Fore, Back, Style
 init()  # colorama init
 
 __AUTHOR__ = "Kuczu https://github.com/Kuczu"
-__VERSION__ = "0.2 BETA"
+__VERSION__ = "1.0"
 __LICENSE__ = "MIT"
-
-IS_INTERRUPTED = False
 
 WIDTH = ""
 HEIGHT = ""
@@ -48,7 +46,7 @@ LOGGER = None
 
 def set_default_start_values(path):
     global WIDTH, HEIGHT, PATH, MAIN_PATH, PATH_SEPARATOR, GOOD_FOLDER_NAME, BAD_FOLDER_NAME, UNRECOGNIZED_FOLDER_NAME, \
-        WRITE_TO_FILE_ENABLE, PRINT_PERMITS, WRITE_TO_FILE_PERMITS, LOGGER
+        WRITE_TO_FILE_ENABLE, PRINT_PERMITS, WRITE_TO_FILE_PERMITS
     WIDTH = 1920
     HEIGHT = 1080
 

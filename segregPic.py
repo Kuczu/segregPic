@@ -1,7 +1,9 @@
-# TODO: warning before start
-# TODO: add about
+# TODO: v1.1 generate starting console parameters
+# TODO: v1.1 add about info
+# TODO: v1.1 add copy file with all folders from PATH to specified folder
 
 import os
+import sys
 
 from SegregPicCore import config
 from SegregPicCore import menu
@@ -24,20 +26,62 @@ def run_segreg():
 
     list_of_folder_objects = []
 
+    stats = {'good': {'size': 0, 'amount': 0},
+             'bad': {'size': 0, 'amount': 0},
+             'unrecognized': {'size': 0, 'amount': 0}}
+
     for item in folder_list:
-        # print("Start processing: " + item)
         config.LOGGER.info_output("Start processing: " + item, False)
         list_of_folder_objects.append(MainFolder_class.MainFolder(config.PATH, item))
         list_of_folder_objects[-1].cleanify()
+        list_of_folder_objects[-1].save_folder_stats()
+
+        if config.WRITE_TO_FILE_ENABLE or config.PRINT_PERMITS[config.INFO_print_level]:
+            stat = list_of_folder_objects[-1].get_folder_stats()
+
+            stats['good']['size'] += stat['good']['size']
+            stats['good']['amount'] += stat['good']['amount']
+
+            stats['bad']['size'] += stat['bad']['size']
+            stats['bad']['amount'] += stat['bad']['amount']
+
+            stats['unrecognized']['size'] += stat['unrecognized']['size']
+            stats['unrecognized']['amount'] += stat['unrecognized']['amount']
+
+    if config.WRITE_TO_FILE_ENABLE or config.PRINT_PERMITS[config.INFO_print_level]:
+        message = "\n\nMatched files: " + str(stats['good']['amount']) + '\n'
+        message += "Matched files size: " + str(stats['good']['size'] // 1024) + 'kB \n'
+
+        message += "Not Matched files: " + str(stats['bad']['amount']) + '\n'
+        message += "Not Matched files size: " + str(stats['bad']['size'] // 1024) + 'kB \n'
+
+        message += "Unrecognized files: " + str(stats['unrecognized']['amount']) + '\n'
+        message += "Unrecognized files size: " + str(stats['unrecognized']['size'] // 1024) + 'kB \n'
+
+        if config.WRITE_TO_FILE_ENABLE:
+            config.LOGGER.write_to_file(message, 0, False)
+
+        config.LOGGER.info_output(message, False)
+
+
+def confirm():
+    print("ARE YOU SURE YOU WANT TO START?")
+    print("Type 'y' to start something else to interrupt")
+
+    command = input(">  ").split(' ')[0]
+
+    if not command == "y":
+        sys.exit("Interrupted")
 
 
 def start():
+    confirm()
     config.create_logger_instance()
     run_segreg()
 
 
 def prepare():
-    config.set_default_start_values(os.getcwd() + "\\test")
+    config.set_default_start_values(os.getcwd() + "\\test")  # TODO
     config.set_log_filename()
 
     menu.display_basic_info()
@@ -50,12 +94,12 @@ def prepare():
 def main():
     prepare()
 
-    while not config.IS_INTERRUPTED:
+    while True:
         command = parser.get_prompt()
 
         # add return variable as return code
         if command == 0:
-            break
+            sys.exit()
         elif command == 1:
             start()
         elif command == 2:

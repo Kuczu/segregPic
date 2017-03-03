@@ -1,4 +1,6 @@
 import os
+import datetime
+
 from PIL import Image
 
 from SegregPicCore import SpecificFolder_class as SpecificFolder
@@ -17,23 +19,25 @@ class MainFolder:
         self.__list_of_folders = []
         self.__list_of_files = []
 
+        self.__folder_stats = {}
+
     def cleanify(self):
-        self.get_folders_and_files_list(self.__folder_full_path)
+        self.__get_folders_and_files_list(self.__folder_full_path)
 
         if self.__list_of_files:
-            self.recognize_files_and_move()
+            self.__recognize_files_and_move()
 
         while self.__list_of_folders:
             current_folder = self.__list_of_folders.pop()
 
             config.LOGGER.info_output(" PROCESSING: " + current_folder, False)
 
-            self.get_folders_and_files_list(current_folder)
+            self.__get_folders_and_files_list(current_folder)
 
             if self.__list_of_files:
-                self.recognize_files_and_move()
+                self.__recognize_files_and_move()
 
-    def get_folders_and_files_list(self, path):
+    def __get_folders_and_files_list(self, path):
         for entry in os.scandir(path):
             if not entry.is_file():
                 if not (entry.name == config.GOOD_FOLDER_NAME or
@@ -44,7 +48,7 @@ class MainFolder:
             if entry.is_file():
                 self.__list_of_files.append(entry.path)
 
-    def recognize_files_and_move(self):
+    def __recognize_files_and_move(self):
         for file in self.__list_of_files:
             fp = open(file, "rb")
 
@@ -68,3 +72,37 @@ class MainFolder:
                 pass
 
         self.__list_of_files.clear()
+
+    def save_folder_stats(self):
+        if not config.WRITE_SUMMARY_TO_FILE:
+            return
+
+        file_name = "SegregPicSummary.txt"
+        date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
+
+        file = open(self.__folder_full_path + config.PATH_SEPARATOR + file_name, 'x')
+
+        message = "Processed date: " + date + '\n\n'
+
+        stats = self.__good_folder.get_folder_stats()
+        self.__folder_stats.update({'good': stats})
+
+        message += "Matched files: " + str(stats['amount']) + '\n'
+        message += "Matched files size: " + str(stats['size'] // 1024) + 'kB \n'
+
+        stats = self.__bad_folder.get_folder_stats()
+        self.__folder_stats.update({'bad': stats})
+
+        message += "Not matched files: " + str(stats['amount']) + '\n'
+        message += "Not matched files size: " + str(stats['size'] // 1024) + 'kB\n'
+
+        stats = self.__unrecognized_folder.get_folder_stats()
+        self.__folder_stats.update({'unrecognized': stats})
+
+        message += "Unrecognized files: " + str(stats['amount']) + '\n'
+        message += "Unrecognized files size: " + str(stats['size'] // 1024) + 'kB \n'
+
+        file.write(message)
+
+    def get_folder_stats(self):
+        return self.__folder_stats

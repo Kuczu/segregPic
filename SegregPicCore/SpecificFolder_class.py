@@ -15,7 +15,7 @@ class SpecificFolder:
         self.__unique_subfolder_counter = 0
 
         self.__folder_size_bytes = 0
-        self.__folder_amount = 0
+        self.__folder_processed_files = 0
 
         self.create_itself_folder()
 
@@ -50,7 +50,7 @@ class SpecificFolder:
     def update_folder_status(self, image_full_path):
         # can raise OSError exception
         self.__folder_size_bytes += os.path.getsize(image_full_path)
-        self.__folder_amount += 1
+        self.__folder_processed_files += 1
 
     def get_path_to_unique_where_to_copy(self, image_name):
         if self.__unique_subfolder_name == '':
@@ -108,3 +108,7 @@ class SpecificFolder:
         os.makedirs(full_path)
         self.__unique_subfolder_counter += 1
         config.LOGGER.info_output('   Created subfolder - folder: ' + full_path)
+
+    def get_folder_stats(self):
+        return {'size': self.__folder_size_bytes,
+                'amount': self.__folder_processed_files}

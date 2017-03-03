@@ -40,28 +40,28 @@ class Logger(metaclass=LoggerMetaclass):
 
     def info_output(self, message, print_prologue=True):
         level = config.INFO_print_level
-        self.output_method(message, level, print_prologue)
+        self.__output_method(message, level, print_prologue)
 
     def success_output(self, message, print_prologue=True):
         level = config.SUCCESS_print_level
-        self.output_method(message, level, print_prologue)
+        self.__output_method(message, level, print_prologue)
 
     def warning_output(self, message, print_prologue=True):
         level = config.WARNING_print_level
-        self.output_method(message, level, print_prologue)
+        self.__output_method(message, level, print_prologue)
 
     def error_output(self, message, print_prologue=True):
         level = config.ERROR_print_level
-        self.output_method(message, level, print_prologue)
+        self.__output_method(message, level, print_prologue)
 
-    def output_method(self, message, level, print_prologue):
+    def __output_method(self, message, level, print_prologue):
         if config.PRINT_PERMITS[level]:
-            self.print_stdout(message, level, print_prologue)
+            self.__print_stdout(message, level, print_prologue)
 
         if config.WRITE_TO_FILE_PERMITS[level]:
             self.write_to_file(message, level, print_prologue)
 
-    def print_stdout(self, message, level, print_prologue):
+    def __print_stdout(self, message, level, print_prologue):
         if print_prologue:
             print(config.PRINT_OPTIONS[level] + self.PRINT_PROLOG[level])
 
