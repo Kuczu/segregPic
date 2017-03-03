@@ -1,6 +1,7 @@
 # TODO: v1.1 generate starting console parameters
 # TODO: v1.1 add about info
 # TODO: v1.1 add copy file with all folders from PATH to specified folder
+# TODO: v1.1 clear empty cleared folders
 
 import os
 import sys
@@ -48,8 +49,9 @@ def run_segreg():
             stats['unrecognized']['size'] += stat['unrecognized']['size']
             stats['unrecognized']['amount'] += stat['unrecognized']['amount']
 
-    if config.WRITE_TO_FILE_ENABLE or config.PRINT_PERMITS[config.INFO_print_level]:
-        message = "\n\nMatched files: " + str(stats['good']['amount']) + '\n'
+    message = ''
+    if config.WRITE_TO_FILE_ENABLE:
+        message += "\n\nMatched files: " + str(stats['good']['amount']) + '\n'
         message += "Matched files size: " + str(stats['good']['size'] // 1024) + 'kB \n'
 
         message += "Not Matched files: " + str(stats['bad']['amount']) + '\n'
@@ -58,10 +60,9 @@ def run_segreg():
         message += "Unrecognized files: " + str(stats['unrecognized']['amount']) + '\n'
         message += "Unrecognized files size: " + str(stats['unrecognized']['size'] // 1024) + 'kB \n'
 
-        if config.WRITE_TO_FILE_ENABLE:
-            config.LOGGER.write_to_file(message, 0, False)
+        config.LOGGER.write_to_file(message, 0, False)
 
-        config.LOGGER.info_output(message, False)
+    print(message)
 
 
 def confirm():
@@ -81,7 +82,7 @@ def start():
 
 
 def prepare():
-    config.set_default_start_values(os.getcwd() + "\\test")  # TODO
+    config.set_default_start_values(os.getcwd())
     config.set_log_filename()
 
     menu.display_basic_info()
