@@ -3,7 +3,6 @@ import shutil
 import uuid
 
 from SegregPicCore import config
-from SegregPicCore import output_methods as output
 
 
 class SpecificFolder:
@@ -34,7 +33,7 @@ class SpecificFolder:
             config.LOGGER.info_output("     moved " + image_path + " to " + image_destin, False)
 
         except PermissionError as x:
-            output.print_output(str(x), config.WARNING_print_level)
+            config.LOGGER.warning_output(str(x))
         except shutil.Error as x:
             string_exception = str(x)
 
