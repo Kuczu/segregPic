@@ -16,19 +16,21 @@ class SpecificFolder:
         self.__folder_size_bytes = 0
         self.__folder_processed_files = 0
 
-        self.create_itself_folder()
+        self.__create_itself_folder()
 
-    def create_itself_folder(self):
+    def __create_itself_folder(self):
         try:
             os.makedirs(self.__folder_full_path)
         except OSError:
             config.LOGGER.warning_output("Folder: " + self.__folder_name + " already exists!")
 
-    def move_file(self, image_path, image_destination = ''):
+    def move_file(self, image_path, image_destination =''):
         try:
             image_destin = self.__folder_full_path + config.PATH_SEPARATOR + image_destination
+
+            file_size = self.__get_file_size(image_path)
             shutil.move(image_path, image_destin)
-            self.update_folder_status(image_destin)
+            self.__update_folder_status(file_size)
 
             config.LOGGER.info_output("     moved " + image_path + " to " + image_destin, False)
 
@@ -41,44 +43,47 @@ class SpecificFolder:
                 config.LOGGER.warning_output(string_exception)
 
                 image_name = image_path.split(config.PATH_SEPARATOR)[-1]
-                image_dest = self.get_path_to_unique_where_to_copy(image_name)
+                image_dest = self.__get_path_to_unique_where_to_copy(image_name)
                 self.move_file(image_path, image_dest)
             else:
                 config.LOGGER.error_output(string_exception)
 
-    def update_folder_status(self, image_full_path):
+    def __get_file_size(self, image_full_path):
         # can raise OSError exception
-        self.__folder_size_bytes += os.path.getsize(image_full_path)
+        return os.path.getsize(image_full_path)
+
+    def __update_folder_status(self, file_size):
+        self.__folder_size_bytes += file_size
         self.__folder_processed_files += 1
 
-    def get_path_to_unique_where_to_copy(self, image_name):
+    def __get_path_to_unique_where_to_copy(self, image_name):
         if self.__unique_subfolder_name == '':
-            self.crate_unique_foldername()
+            self.__crate_unique_foldername()
             return self.__unique_subfolder_name
-        elif not self.is_file_exists_in_given_folder(image_name, self.__unique_subfolder_name):
+        elif not self.__is_file_exists_in_given_folder(image_name, self.__unique_subfolder_name):
             return self.__unique_subfolder_name
         else:
-            folder_name = self.get_subfolder_name_in_unique_where_to_copy(image_name)
+            folder_name = self.__get_subfolder_name_in_unique_where_to_copy(image_name)
 
             if folder_name == False:
-                self.create_next_subfolder_in_unique()
+                self.__create_next_subfolder_in_unique()
                 return self.__unique_subfolder_name + config.PATH_SEPARATOR + str(self.__unique_subfolder_counter - 1)
             else:
                 return self.__unique_subfolder_name + config.PATH_SEPARATOR + folder_name
 
-    def get_subfolder_name_in_unique_where_to_copy(self, image_name):
+    def __get_subfolder_name_in_unique_where_to_copy(self, image_name):
         for i in range(0, self.__unique_subfolder_counter):
-            if not self.is_file_exists_in_given_folder(image_name, self.__unique_subfolder_name + config.PATH_SEPARATOR + str(i)):
+            if not self.__is_file_exists_in_given_folder(image_name, self.__unique_subfolder_name + config.PATH_SEPARATOR + str(i)):
                 return str(i)
 
         return False
 
-    def is_file_exists_in_given_folder(self, filename, folder_name):
-        files_list = self.get_filename_list_from_given_folder(folder_name)
+    def __is_file_exists_in_given_folder(self, filename, folder_name):
+        files_list = self.__get_filename_list_from_given_folder(folder_name)
 
         return filename in files_list
 
-    def get_filename_list_from_given_folder(self, folder_name):
+    def __get_filename_list_from_given_folder(self, folder_name):
         files_list = []
         full_path = self.__folder_full_path + config.PATH_SEPARATOR + folder_name
 
@@ -88,7 +93,7 @@ class SpecificFolder:
 
         return files_list
 
-    def crate_unique_foldername(self):
+    def __crate_unique_foldername(self):
         unique_part = str(uuid.uuid4().hex)
         unique_destination_path = self.__folder_full_path + config.PATH_SEPARATOR + unique_part
 
@@ -101,7 +106,7 @@ class SpecificFolder:
 
         self.__unique_subfolder_name = unique_part
 
-    def create_next_subfolder_in_unique(self):
+    def __create_next_subfolder_in_unique(self):
         full_path = self.__folder_full_path + config.PATH_SEPARATOR + self.__unique_subfolder_name + config.PATH_SEPARATOR + str(self.__unique_subfolder_counter)
 
         os.makedirs(full_path)
