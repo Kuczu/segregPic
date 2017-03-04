@@ -26,7 +26,7 @@ Program udostępnia szereg opcji które można zmienić następującymi komendam
 + **-u nazwa_folderu**:
 	Zmienia nazwę folderu dla plików które nie są plikami graficznymi
 	
-	### **UWAGA: przed uruchomieniem należy zmienić domyślną śnieżkę!**
+	### **UWAGA: przed uruchomieniem należy zmienić domyślną ścieżkę!**
 	
 **Opcje wypisywania:**
 + **-info boolean**:
@@ -75,4 +75,4 @@ Program udostępnia szereg opcji które można zmienić następującymi komendam
 + **q**:
 	Wyłącza program.
 	
-Jeśli istnieje konflikt nazw - np. 2 pliki o takie samej nazwie, program generuje podfolder o unikalnej nazwie i tam umieszcza kolejne pliki z tą samą nazwą.
+Jeśli istnieje konflikt nazw - np. 2 pliki o takie samej nazwie, program generuje pod folder o unikalnej nazwie i tam umieszcza kolejne pliki z tą samą nazwą.
