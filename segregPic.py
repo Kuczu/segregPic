@@ -2,6 +2,7 @@
 # TODO: v1.1 add about info
 # TODO: v1.1 add copy file with all folders from PATH to specified folder
 # TODO: v1.1 clear empty cleared folders
+# TODO: v1.1 delete only bad pics?
 
 import os
 import sys
