@@ -149,13 +149,21 @@ def get_prompt():
     if command[0] == 'q':
         return 0
     elif command[0] == 'start':
-        return 1
+        return check_start_options()
     elif command[0] == 'help':
         return 2
     elif command[0] == 'config':
         return 3
     else:
         return parse_commands(command)
+
+
+def check_start_options():
+    if config.PATH == config.MAIN_PATH:
+        print("Change Path to clean!")
+        return -2
+
+    return 1
 
 
 def parse_commands(command_list):
