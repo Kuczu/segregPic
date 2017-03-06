@@ -8,7 +8,7 @@ Program testowany był na Windows 10 oraz wymaga Pythona 3 (v3.5.2+). **Ponadto 
 
 W programie podaje się ścieżkę w której program ma segregować pliki. Działa tak, że w każdym wykrytym folderze, i rekurencyjnie w jego podfolderach, segreguje obrazy przenosząc je do zadeklarowanych folderów.
 
-Program udostępnia szereg opcji które można zmienić następującymi komendami - można je podać jako komendy wywoływane wsadowe lub już bezpośrednio w programie:
+Program udostępnia szereg opcji które można zmienić następującymi komendami - można je podać jako argumenty lub już bezpośrednio w programie:
 
 **Opcje główne programu:**
 + **-w wartość(int)**:
